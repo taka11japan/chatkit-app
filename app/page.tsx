@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-// NOTE: This page lives under /app/page.tsx. If your components folder is placed at project root ("/components"),
-// the correct relative import is one level up.
-// If your ChatDock is under "/app/components/ChatDock.tsx" instead, switch this back to "./components/ChatDock".
-import ChatDock from "../components/ChatDock";
+import Image from "next/image"; // ✅ Next.js Image
+import ChatDock from "../components/ChatDock"; // ルート直下の /components を参照
 
 export default function Page() {
   const [open, setOpen] = useState(false);
@@ -33,7 +31,7 @@ export default function Page() {
             <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">
               <span className="block">爽快、クールに</span>
               <span className="text-cyan-300">“話して体験”できる</span>
-              <span className="block">MCS付替 LP</span>
+              <span className="block">プロダクトLP</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-slate-300 leading-relaxed">
@@ -61,7 +59,7 @@ export default function Page() {
             <p className="mt-6 text-sm text-slate-400">
               * このデモは Agent Builder で作成したワークフロー（<code>wf_…</code>）を ChatKit 経由で起動します。
               ドメインを <em>Allowed domains</em> に登録し、<code>OPENAI_API_KEY</code> と
-              <code>NEXT_PUBLIC_OPENAI_ORG / WORKFLOW</code> を .env.local に設定してください。
+              <code> NEXT_PUBLIC_OPENAI_ORG / WORKFLOW</code> を .env.local に設定してください。
             </p>
           </div>
 
@@ -69,16 +67,27 @@ export default function Page() {
           <div className="relative">
             <div className="absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-br from-cyan-400/20 via-sky-500/10 to-transparent blur-2xl" />
             <div className="rounded-3xl bg-white/5 ring-1 ring-white/10 overflow-hidden shadow-2xl">
-              {/* Replace /hero-sea.webp with your own image placed under public/ */}
-              <img
+              {/* ✅ Use Next.js <Image> for optimization */}
+              <Image
                 src="/hero-sea.webp"
                 alt="Sea-breeze style visual"
+                width={1600}
+                height={840}
                 className="w-full h-[420px] object-cover object-center"
+                priority
               />
             </div>
             {/* wave footer under image */}
-            <svg className="absolute -bottom-8 left-0 w-full h-16 text-cyan-300/30" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden>
-              <path fill="currentColor" d="M0,64L60,53.3C120,43,240,21,360,16C480,11,600,21,720,53.3C840,85,960,139,1080,149.3C1200,160,1320,128,1380,112L1440,96V160H0Z"/>
+            <svg
+              className="absolute -bottom-8 left-0 w-full h-16 text-cyan-300/30"
+              viewBox="0 0 1440 120"
+              preserveAspectRatio="none"
+              aria-hidden
+            >
+              <path
+                fill="currentColor"
+                d="M0,64L60,53.3C120,43,240,21,360,16C480,11,600,21,720,53.3C840,85,960,139,1080,149.3C1200,160,1320,128,1380,112L1440,96V160H0Z"
+              />
             </svg>
           </div>
         </div>
@@ -111,7 +120,7 @@ export default function Page() {
         </div>
       </footer>
 
-      {/* --- Floating FAB to open chat --- */}
+      {/* --- Floating FAB --- */}
       <button
         onClick={() => setOpen(true)}
         className="fixed bottom-6 right-6 z-[60] rounded-full bg-cyan-500 text-slate-900 px-5 py-3 font-semibold shadow-xl hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-white/30"
@@ -120,7 +129,7 @@ export default function Page() {
         💬 Chatで話す
       </button>
 
-      {/* ChatKit Dock (uses your existing ChatDock.tsx) */}
+      {/* ChatKit Dock */}
       <ChatDock open={open} onOpenChange={setOpen} />
     </main>
   );
