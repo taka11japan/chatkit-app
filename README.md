@@ -1,71 +1,86 @@
-# ChatKit Starter Template
+# ChatKit LP Demo — Agent Builder × Next.js
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-![NextJS](https://img.shields.io/badge/Built_with-NextJS-blue)
-![OpenAI API](https://img.shields.io/badge/Powered_by-OpenAI_API-orange)
+A modern landing page (LP) demo integrating **OpenAI Agent Builder** workflows into a fully responsive **Next.js** app using **ChatKit Web Components**.
 
-This repository is the simplest way to bootstrap a [ChatKit](http://openai.github.io/chatkit-js/) application. It ships with a minimal Next.js UI, the ChatKit web component, and a ready-to-use session endpoint so you can experiment with OpenAI-hosted workflows built using [Agent Builder](https://platform.openai.com/agent-builder).
+![preview](public/hero-sea.webp)
 
-## What You Get
+## 🌊 Overview
 
-- Next.js app with `<openai-chatkit>` web component and theming controls
-- API endpoint for creating a session at [`app/api/create-session/route.ts`](app/api/create-session/route.ts)
-- Config file for starter prompts, theme, placeholder text, and greeting message
+This project demonstrates how to embed interactive, real‑time AI chat experiences directly into a marketing or product landing page. Visitors can click **“Chatで話す”** to open an embedded ChatKit panel connected to a pre‑built Agent Builder workflow.
 
-## Getting Started
+## ✨ Features
 
-### 1. Install dependencies
+* Built with **Next.js 15** (App Router)
+* Fully responsive, ocean‑inspired LP design with Tailwind CSS
+* **ChatDock** component: slide‑in right‑side chat panel
+* Secure server API routes for session handling (`/api/create-session`, `/api/refresh-session`)
+* Environment‑based workflow integration (Agent Builder)
+* Ready for GitHub deployment / Vercel hosting
+
+## ⚙️ Environment Variables
+
+Create a `.env.local` file at the project root:
 
 ```bash
+OPENAI_API_KEY=sk-proj-xxxxx
+NEXT_PUBLIC_OPENAI_ORG=org_xxxxx
+NEXT_PUBLIC_OPENAI_WORKFLOW=wf_xxxxx
+```
+
+Ensure the domain (e.g., [http://localhost:3000](http://localhost:3000)) is added under your **Agent Builder → Allowed Domains** settings.
+
+## 🧱 Folder Structure
+
+```
+app/
+  layout.tsx           # Loads ChatKit script globally
+  page.tsx             # LP page with CTA → opens ChatDock
+  api/
+    create-session/    # Creates ChatKit session via OpenAI API
+    refresh-session/   # Refreshes session token
+components/
+  ChatDock.tsx         # ChatKit dock panel (right-side slide-in)
+public/
+  hero-sea.webp        # Visual background image
+```
+
+## 🚀 Quick Start
+
+```bash
+git clone https://github.com/taka11japan/chatkit-app.git
+cd chatkit-app
 npm install
-```
-
-### 2. Create your environment file
-
-Copy the example file and fill in the required values:
-
-```bash
-cp .env.example .env.local
-```
-
-You can get your workflow id from the [Agent Builder](https://platform.openai.com/agent-builder) interface, after clicking "Publish":
-
-<img src="./public/docs/workflow.jpg" width=500 />
-
-You can get your OpenAI API key from the [OpenAI API Keys](https://platform.openai.com/api-keys) page.
-
-### 3. Configure ChatKit credentials
-
-Update `.env.local` with the variables that match your setup.
-
-- `OPENAI_API_KEY` — This must be an API key created **within the same org & project as your Agent Builder**. If you already have a different `OPENAI_API_KEY` env variable set in your terminal session, that one will take precedence over the key in `.env.local` one (this is how a Next.js app works). So, **please run `unset OPENAI_API_KEY` (`set OPENAI_API_KEY=` for Windows OS) beforehand**.
-- `NEXT_PUBLIC_CHATKIT_WORKFLOW_ID` — This is the ID of the workflow you created in [Agent Builder](https://platform.openai.com/agent-builder), which starts with `wf_...`
-- (optional) `CHATKIT_API_BASE` - This is a customizable base URL for the ChatKit API endpoint
-
-> Note: if your workflow is using a model requiring organization verification, such as GPT-5, make sure you verify your organization first. Visit your [organization settings](https://platform.openai.com/settings/organization/general) and click on "Verify Organization".
-
-### 4. Run the app
-
-```bash
 npm run dev
 ```
 
-Visit `http://localhost:3000` and start chatting. Use the prompts on the start screen to verify your workflow connection, then customize the UI or prompt list in [`lib/config.ts`](lib/config.ts) and [`components/ChatKitPanel.tsx`](components/ChatKitPanel.tsx).
+Then open [http://localhost:3000](http://localhost:3000) and click **💬 Chatで話す** to test your Agent Builder chat.
 
-### 5. Deploy your app
+## 🧩 Tech Stack
 
-```bash
-npm run build
-```
+* **Next.js 15 (App Router)**
+* **TypeScript + React 18**
+* **Tailwind CSS** for design
+* **OpenAI ChatKit Web Components** for chat integration
 
-Before deploying your app, you need to verify the domain by adding it to the [Domain allowlist](https://platform.openai.com/settings/organization/security/domain-allowlist) on your dashboard.
+## 🧠 How It Works
 
-## Customization Tips
+1. Layout loads ChatKit via `<Script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" />`.
+2. ChatDock waits until `<openai-chatkit>` is defined.
+3. When opened, it fetches a `client_secret` from `/api/create-session` using the OpenAI API.
+4. The chat UI renders in the dock and connects to your Agent Builder workflow.
 
-- Adjust starter prompts, greeting text, [chatkit theme](https://chatkit.studio/playground), and placeholder copy in [`lib/config.ts`](lib/config.ts).
-- Update the event handlers inside [`components/.tsx`](components/ChatKitPanel.tsx) to integrate with your product analytics or storage.
+## 🛠️ Deployment
 
-## References
+This project is Vercel‑ready:
 
-- [ChatKit JavaScript Library](http://openai.github.io/chatkit-js/)
-- [Advanced Self-Hosting Examples](https://github.com/openai/openai-chatkit-advanced-samples)
+1. Push to GitHub
+2. Import into Vercel → Add `.env` values
+3. Deploy 🎉
+
+## 🧾 License
+
+MIT — © 2025 taka11japan. Use freely with attribution.
+
+---
+
+💬 **Demo LP concept by taka × ChatKit × ChatGPT‑5.**
