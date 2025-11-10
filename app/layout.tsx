@@ -1,26 +1,30 @@
-import Script from "next/script";
-import type { Metadata } from "next";
+// app/layout.tsx
 import "./globals.css";
+import type { Metadata } from "next";
+import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "AgentKit demo",
-  description: "Demo of ChatKit with hosted workflow",
+  title: "ChatKit LP ✨",
+  description: "ChatKit integration demo page",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <head>
+    <html lang="ja">
+      <body>
+        {/* ✅ ChatKit のWeb Componentsスクリプトを読み込み */}
         <Script
+          id="chatkit-loader"
           src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
+          type="module"
         />
-      </head>
-      <body className="antialiased">{children}</body>
+        {children}
+      </body>
     </html>
   );
 }

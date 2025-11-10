@@ -1,18 +1,12 @@
 import type { NextConfig } from "next";
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import path from "path";
 
 const nextConfig: NextConfig = {
-  // ここで Next.js が使用するワークスペースルートを明示的に指定します
-  outputFileTracingRoot: resolve(__dirname),
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...(config.resolve.alias ?? {}),
-    };
-    return config;
-  },
+  // ここが超重要：このプロジェクトフォルダをトレースの起点に固定
+  outputFileTracingRoot: path.join(__dirname),
+
+  // React版/本体を確実にトランスパイル対象に
+  transpilePackages: ["@openai/chatkit", "@openai/chatkit-react"],
 };
 
 export default nextConfig;
