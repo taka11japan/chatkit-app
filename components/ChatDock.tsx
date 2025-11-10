@@ -8,20 +8,18 @@ const ORG = process.env.NEXT_PUBLIC_OPENAI_ORG || "";
 const WORKFLOW = process.env.NEXT_PUBLIC_OPENAI_WORKFLOW || ""; // wf_...
 
 // ===== Type-safe definitions (no 'any') =====
-type ClientSecret = {
+export type ClientSecret = {
   value: string;
-  // other fields may be included by the API
-  [k: string]: unknown;
+  [k: string]: unknown; // tolerate extra fields from API
 };
 
-type ChatKitOptions = {
+export type ChatKitOptions = {
   api: {
-    // must return the whole client_secret object
     getClientSecret: (current?: string) => Promise<ClientSecret | undefined>;
   };
 };
 
-interface OpenAIChatKitElement extends HTMLElement {
+export interface OpenAIChatKitElement extends HTMLElement {
   options?: ChatKitOptions;
   setOptions?: (opts: ChatKitOptions) => void;
 }
@@ -49,9 +47,7 @@ export default function ChatDock({ open, onOpenChange }: Props) {
         }
         if (!cancelled) setReady(true);
       } catch (e) {
-        if (!cancelled) {
-          setError(e instanceof Error ? e.message : "ChatKit not defined");
-        }
+        if (!cancelled) setError(e instanceof Error ? e.message : "ChatKit not defined");
       }
     })();
     return () => {
@@ -69,7 +65,7 @@ export default function ChatDock({ open, onOpenChange }: Props) {
     el.style.width = "100%";
     el.style.height = "100%";
     el.style.display = "block";
-    (el.style as any).fontSize = "clamp(12px, 1.6vw, 16px)";
+    el.style.fontSize = "clamp(12px, 1.6vw, 16px)";
 
     // 1) append first
     mountRef.current.appendChild(el);
@@ -93,7 +89,6 @@ export default function ChatDock({ open, onOpenChange }: Props) {
 
             const isJson = r.headers.get("content-type")?.includes("application/json");
             const body = isJson ? ((await r.json()) as unknown) : (await r.text());
-            // eslint-disable-next-line no-console
             console.log(`[chatkit] ${path} status/body:`, r.status, body);
 
             if (!r.ok) {
@@ -105,7 +100,6 @@ export default function ChatDock({ open, onOpenChange }: Props) {
               | undefined;
             return cs;
           } catch (e) {
-            // eslint-disable-next-line no-console
             console.error("[chatkit] getClientSecret error", e);
             setError(e instanceof Error ? e.message : String(e));
             return undefined;
@@ -114,16 +108,11 @@ export default function ChatDock({ open, onOpenChange }: Props) {
       },
     };
 
-    try {
-      el.options = options;
-    } catch {}
-    try {
-      if (typeof el.setOptions === "function") el.setOptions(options);
-    } catch {}
+    try { el.options = options; } catch {}
+    try { if (typeof el.setOptions === "function") el.setOptions(options); } catch {}
 
     el.addEventListener("error", (evt: Event) => {
       const detail = (evt as unknown as { detail?: unknown }).detail;
-      // eslint-disable-next-line no-console
       console.error("[chatkit] widget error", detail ?? evt);
       setError(`widget error: ${typeof detail === "string" ? detail : JSON.stringify(detail ?? {})}`);
     });
@@ -163,9 +152,14 @@ export default function ChatDock({ open, onOpenChange }: Props) {
 
         {/* Body (scrollable wrapper) */}
         <div className="flex-1 overflow-auto p-2">
+          {/* Loader / Error / WebComponent mount target */}
           <div className="relative h-[calc(100vh-3.5rem-1rem)]">
-            {!ready && !error && <div className="grid place-items-center text-slate-400 text-sm h-full">Loading Chat…</div>}
-            {error && <div className="overflow-auto text-rose-300 text-sm p-4 h-full">{String(error)}</div>}
+            {!ready && !error && (
+              <div className="grid place-items-center text-slate-400 text-sm h-full">Loading Chat…</div>
+            )}
+            {error && (
+              <div className="overflow-auto text-rose-300 text-sm p-4 h-full">{String(error)}</div>
+            )}
             <div ref={mountRef} className="h-full w-full" />
           </div>
         </div>
