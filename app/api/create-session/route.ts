@@ -16,14 +16,11 @@ export async function POST() {
     );
   }
 
-  // CookieからユーザーID
-  const store = cookies();
-  let userId = store.get("ck_user_id")?.value;
+  // 🔧 Next 15: cookies() は Promise なので await 必須
+  const cookieStore = await cookies();
+  let userId = cookieStore.get("ck_user_id")?.value;
   if (!userId) {
     userId = `dev_${crypto.randomUUID()}`;
-    store.set("ck_user_id", userId, {
-      httpOnly: false, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 7,
-    });
   }
 
   const upstream = await fetch("https://api.openai.com/v1/chatkit/sessions", {
@@ -32,7 +29,6 @@ export async function POST() {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
       "X-OpenAI-Org": org,
-      // ✅ これが重要！
       "OpenAI-Beta": "chatkit_beta=v1",
     },
     body: JSON.stringify({
@@ -43,8 +39,14 @@ export async function POST() {
 
   const data = await upstream.json();
   const res = NextResponse.json(data, { status: upstream.status });
+
+  // 応答側の Cookie にセット（こちらは従来通り）
   res.cookies.set("ck_user_id", userId, {
-    httpOnly: false, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 7,
+    httpOnly: false,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
   });
+
   return res;
 }
