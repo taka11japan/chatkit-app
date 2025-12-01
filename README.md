@@ -82,5 +82,6 @@ This project is Vercel‑ready:
 MIT — © 2025 taka11japan. Use freely with attribution.
 
 ---
+update
 
 💬 **Demo LP concept by taka × ChatKit × ChatGPT‑5.**
