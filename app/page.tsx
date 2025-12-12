@@ -29,9 +29,11 @@ export default function Page() {
             </span>
 
             <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">
-              <span className="block">爽快、クールに</span>
-              <span className="text-cyan-300">“話して体験”できる</span>
-              <span className="block">MCS付替え LP</span>
+              爽快、クールに
+              <br />
+              <span className="text-cyan-300">"話して体験"できる</span>
+              <br />
+              MCS付替え LP
             </h1>
 
             <p className="mt-6 max-w-xl text-slate-300 leading-relaxed">
