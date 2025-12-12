@@ -33,8 +33,7 @@ export default function Page() {
               <br />
               <span className="text-cyan-300 whitespace-nowrap">"話して体験"できる</span>
               <br />
-              <br />
-              MCS付替え LP
+              <span className="block mt-4">MCS付替え LP</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-slate-300 leading-relaxed">
