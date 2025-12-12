@@ -2,7 +2,7 @@
 
 A modern landing page (LP) demo integrating **OpenAI Agent Builder** workflows into a fully responsive **Next.js** app using **ChatKit Web Components**.
 
-<img src="public/hero-sea.webp" alt="preview" width="600">
+<img src="public/hero-sea.webp" alt="preview" width="75">
 
 ## 🌊 Overview
 
