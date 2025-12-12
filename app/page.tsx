@@ -31,7 +31,7 @@ export default function Page() {
             <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">
               爽快、クールに
               <br />
-              <span className="text-cyan-300">"話して体験"できる</span>
+              <span className="text-cyan-300 whitespace-nowrap">"話して体験"できる</span>
               <br />
               MCS付替え LP
             </h1>
